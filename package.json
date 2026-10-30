@@ -1,0 +1,22 @@
+{
+  "name": "pcremote",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private, low-latency remote desktop for your own Windows PC, controlled from a laptop browser over Tailscale with a device certificate lock.",
+  "license": "MIT",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "win32"
+  ],
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "koffi": "^2.9.0",
+    "node-forge": "^1.4.0",
+    "ws": "^8.18.0"
+  }
+}

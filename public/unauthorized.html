@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PC Remote — Device not authorized</title>
+  <!-- Self-contained on purpose: devices without the certificate get this page and nothing else. -->
+  <style>
+    :root { --bg: #09090b; --card: #18181b; --line: rgba(255,255,255,.1); --text: #fafafa; --muted: #a1a1aa; color-scheme: dark; }
+    @media (prefers-color-scheme: light) { :root { --bg: #f4f4f5; --card: #fff; --line: rgba(9,9,11,.1); --text: #09090b; --muted: #52525b; color-scheme: light; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--bg); color: var(--text);
+      font: 14px/1.6 "Segoe UI Variable Text", "Segoe UI", -apple-system, system-ui, sans-serif; }
+    .card { width: min(480px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+    h1 { margin: 0; font-size: 18px; } h2 { margin: 0 0 6px; font-size: 17px; }
+    .muted { color: var(--muted); margin: 0; font-size: 12.5px; }
+    ol { padding-inline-start: 20px; line-height: 1.8; }
+    code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 12.5px; }
+    .ar { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b97ff"/><stop offset="1" stop-color="#2f5fd0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#g)"/><rect x="12" y="15" width="40" height="26" rx="4" fill="none" stroke="#fff" stroke-width="3.5"/><path d="M26 49h12M32 41v8" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M28 23l9 5-9 5z" fill="#fff"/></svg>
+      <div><h1>Device not authorized</h1><p class="muted">PC Remote</p></div>
+    </div>
+    <p>This device doesn't carry the access certificate, so the PC refused the connection. Access is locked to one enrolled laptop.</p>
+    <ol>
+      <li>On the PC, open the folder <code>data\enroll</code> inside the PC Remote folder.</li>
+      <li>Copy the whole folder to this device (USB drive or Tailscale).</li>
+      <li>Run <b>install-on-laptop.bat</b> and click Yes if Windows asks.</li>
+      <li>Close every browser window, reopen it, and come back to this address.</li>
+    </ol>
+
+    <div class="ar" dir="rtl" lang="ar">
+      <h2>جهاز غير مصرّح</h2>
+      <p>هذا الجهاز لا يحمل شهادة الدخول، لذلك رفض البي سي الاتصال. الدخول مقفل على لابتوب واحد مسجّل فقط.</p>
+      <ol>
+        <li>على البي سي، افتح المجلد <code>data\enroll</code> داخل مجلد PC Remote.</li>
+        <li>انسخ المجلد كاملاً إلى هذا الجهاز (فلاش أو Tailscale).</li>
+        <li>شغّل <b>install-on-laptop.bat</b> ووافق إذا طلب ويندوز.</li>
+        <li>أغلق كل نوافذ المتصفح، ثم افتحه وارجع لنفس العنوان.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Private, per-machine state: password hash, device tokens, certificates and keys,
+# the laptop enrollment bundle and logs. Never commit this folder.
+data/
+
+# Downloaded or built at install time (FFmpeg, helper executables, ViGEm client DLL)
+bin/
+node_modules/
+
+*.log
+*.p12
+*.pfx
+*.key
+Thumbs.db
+desktop.ini
+.DS_Store

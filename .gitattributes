@@ -1,0 +1,8 @@
+# Windows scripts keep CRLF line endings everywhere, including GitHub's ZIP downloads;
+# cmd.exe can misparse batch files with bare LF endings.
+* text=auto
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.vbs text eol=crlf
+*.png binary

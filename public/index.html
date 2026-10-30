@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PC Remote</title>
+  <meta name="theme-color" content="#0b0b0e">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ======================= Login ======================= -->
+  <section id="login" class="screen" hidden>
+    <div class="card">
+      <div class="brand">
+        <img src="icon.svg" alt="" width="40" height="40">
+        <div>
+          <h1>PC Remote</h1>
+          <p class="muted" data-i18n="tagline"></p>
+        </div>
+        <div class="lang-mini seg" data-lang-seg>
+          <button data-lang="ar">ع</button>
+          <button data-lang="en">EN</button>
+        </div>
+      </div>
+
+      <form id="loginForm" autocomplete="on">
+        <label class="field">
+          <span data-i18n="password"></span>
+          <input id="password" type="password" autocomplete="current-password" required dir="ltr">
+        </label>
+        <label class="check">
+          <input id="remember" type="checkbox" checked>
+          <span data-i18n="remember"></span>
+        </label>
+        <button class="primary" type="submit" data-i18n="connect"></button>
+        <p id="loginError" class="error" hidden></p>
+      </form>
+
+      <p id="unsupported" class="error" hidden></p>
+
+      <details class="help">
+        <summary data-i18n="helpSummary"></summary>
+        <div data-i18n-html="helpHtml"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ======================= Remote ======================= -->
+  <section id="remote" class="screen" hidden>
+    <div id="stage"><canvas id="screen"></canvas></div>
+
+    <div id="status" class="status" hidden>
+      <div class="spinner"></div>
+      <p id="statusText"></p>
+      <button id="statusAction" class="primary" hidden></button>
+    </div>
+
+    <div id="stats" class="stats" dir="ltr" hidden></div>
+
+    <!-- floating toolbar -->
+    <div id="dock">
+      <button id="dockHandle" class="handle" data-tip="menu"></button>
+
+      <div id="toolbar" class="toolbar" role="toolbar">
+        <div class="tb-status">
+          <span id="connDot" class="dot"></span>
+          <span id="hostName" class="host"></span>
+          <span id="liveLine" class="live" dir="ltr"></span>
+        </div>
+        <span class="tb-sep"></span>
+
+        <button class="tb-btn" data-pop="popDisplay" data-tip="secDisplay">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M8.5 20h7M12 16.5V20"/></svg>
+        </button>
+        <button id="audioBtn" class="tb-btn" data-tip="audio">
+          <svg viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19z"/><path class="i-on" d="M15.5 8.8a4.6 4.6 0 0 1 0 6.4M18.4 6a8.6 8.6 0 0 1 0 12"/><path class="i-off" d="m16 9.5 5 5m0-5-5 5"/></svg>
+        </button>
+        <button class="tb-btn" data-pop="popInput" data-tip="secInput">
+          <svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v3.5"/></svg>
+        </button>
+        <button class="tb-btn" data-pop="popKeys" data-tip="secShortcuts">
+          <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h.01M10 10h.01M14 10h.01M17.5 10h.01M8 14h8"/></svg>
+        </button>
+        <button id="uploadBtn" class="tb-btn" data-tip="upload">
+          <svg viewBox="0 0 24 24"><path d="M12 15V4.5M7.5 9 12 4.5 16.5 9"/><path d="M4.5 14.5v3a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+        <span class="tb-sep"></span>
+
+        <button class="tb-btn" data-pop="popSettings" data-tip="settings">
+          <svg viewBox="0 0 24 24"><path d="M4 7.5h9M18 7.5h2M4 16.5h3M11 16.5h9"/><circle cx="15.5" cy="7.5" r="2.3"/><circle cx="9" cy="16.5" r="2.3"/></svg>
+        </button>
+        <button id="fullscreenBtn" class="tb-btn" data-tip="fullscreen">
+          <svg viewBox="0 0 24 24"><path class="i-on" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="i-off" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+        </button>
+        <button id="disconnectBtn" class="tb-btn danger" data-tip="disconnect">
+          <svg viewBox="0 0 24 24"><path d="M12 3.5V11"/><path d="M6.6 6.6a7.6 7.6 0 1 0 10.8 0"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- popovers (outside the dock so fixed positioning is relative to the page) -->
+    <div id="popDisplay" class="pop" inert>
+      <div class="pop-title" data-i18n="secDisplay"></div>
+      <div class="field-row">
+        <span class="label" data-i18n="screen"></span>
+        <div id="monitorSeg" class="seg"></div>
+      </div>
+      <div class="field-row">
+        <span class="label" data-i18n="quality"></span>
+        <div id="qualitySeg" class="seg">
+          <button data-q="ultra" data-i18n="qUltra"></button>
+          <button data-q="high" data-i18n="qHigh"></button>
+          <button data-q="balanced" data-i18n="qBalanced"></button>
+        </div>
+      </div>
+      <div class="field-row">
+        <span class="label" data-i18n="fps"></span>
+        <div id="fpsSeg" class="seg" dir="ltr">
+          <button data-fps="30">30</button>
+          <button data-fps="60">60</button>
+          <button data-fps="120">120</button>
+          <button data-fps="144">144</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <span class="label"><span data-i18n="maxBitrate"></span><b id="bitrateVal" dir="ltr"></b></span>
+        <input id="bitrate" type="range" min="5" max="120" step="5" dir="ltr">
+      </div>
+    </div>
+
+    <div id="popInput" class="pop" inert>
+      <div class="pop-title" data-i18n="secInput"></div>
+      <button id="cursorBtn" class="opt"><span class="txt" data-i18n="showCursor"></span><i class="sw"></i></button>
+      <button id="gameBtn" class="opt"><span class="txt"><span data-i18n="gameMode"></span><small data-i18n="gameModeHint"></small></span><i class="sw"></i></button>
+    </div>
+
+    <div id="popKeys" class="pop" inert>
+      <div class="pop-title" data-i18n="secShortcuts"></div>
+      <div class="keys">
+        <button data-combo="win">Win</button>
+        <button data-combo="alttab">Alt+Tab</button>
+        <button data-combo="altf4">Alt+F4</button>
+        <button data-combo="taskmgr" data-i18n="kTaskmgr"></button>
+        <button data-combo="desktop" data-i18n="kDesktop"></button>
+        <button data-combo="explorer" data-i18n="kExplorer"></button>
+        <button data-combo="snip" data-i18n="kSnip"></button>
+        <button data-combo="lang" data-i18n="kLang"></button>
+      </div>
+    </div>
+
+    <div id="popSettings" class="pop" inert>
+      <div class="pop-title" data-i18n="settings"></div>
+      <div class="field-row">
+        <span class="label" data-i18n="appearance"></span>
+        <div id="themeSeg" class="seg">
+          <button data-theme="dark" data-i18n="themeDark"></button>
+          <button data-theme="light" data-i18n="themeLight"></button>
+          <button data-theme="auto" data-i18n="themeAuto"></button>
+        </div>
+      </div>
+      <div class="field-row">
+        <span class="label" data-i18n="accent"></span>
+        <div id="accentPick" class="swatches"></div>
+      </div>
+      <div class="field-row">
+        <span class="label" data-i18n="secLanguage"></span>
+        <div class="seg" data-lang-seg>
+          <button data-lang="ar">العربية</button>
+          <button data-lang="en">English</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button id="pinBtn" class="opt"><span class="txt"><span data-i18n="pinToolbar"></span><small data-i18n="pinHint"></small></span><i class="sw"></i></button>
+      <button id="statsBtn" class="opt"><span class="txt" data-i18n="stats"></span><i class="sw"></i></button>
+      <div class="divider"></div>
+      <button id="forgetBtn" class="opt danger-text"><span class="txt" data-i18n="forget"></span></button>
+    </div>
+
+    <input id="fileInput" type="file" multiple hidden>
+    <div id="tip" class="tip" role="tooltip"></div>
+    <div id="dropOverlay" class="drop" hidden><div data-i18n="drop"></div></div>
+    <div id="toasts" class="toasts"></div>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
